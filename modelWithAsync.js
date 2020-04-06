@@ -10,13 +10,13 @@ function getUser(userId) {
     });
 }
 
-function getUserLastPost(userId){
+function getUserFirstPost(userId){
     return new Promise((resolve, reject) => {
         setTimeout(function(){
             if(userId) {
                 resolve({ "userId": 1, "id": 1, "title": "sunt aut facere repellat", "body": "quia et recusandae consequuntur expedita" });
             } else {
-                reject("getUserLastPost could not be processed, please provide a valid user id.");
+                reject("getUserFirstPost could not be processed, please provide a valid user id.");
             }
         }, 2000);
     });
@@ -49,3 +49,71 @@ function getUserToDos(userId, callback){
         }, 2000);
     });
 }
+
+
+async function getUserDetails(){
+    // async / await
+    var userId = 1;
+    try {
+        const user = await getUser(userId);
+        // if( user.id !== 2 ) {
+        //     throw "some string error";
+        //     //throw new Error("a fancy error");
+        //     //console("ceva dupa return");
+        // }
+        console.log("the user ", user);
+        const post = await getUserFirstPost(user.id);
+        console.log("   the user first post ", post);
+        
+        const comments = await getPostComments(post.id);
+        console.log("      the post first comments ", comments[0]);
+
+    } catch(errorMsg) {
+        console.log("An error has occured: ", errorMsg);
+    }
+
+    const responseArray = await Promise.all([
+        getUserAlbums(userId),
+        getUserToDos(userId)
+    ]);
+
+    // const albums = await ;
+     console.log("         the user's albums ", responseArray[0]);
+
+    // const todos = await getUserToDos(userId);
+     console.log("         the user's todo ", responseArray[1]);
+}
+
+getUserDetails();
+
+
+// getUser(userId).then( user => {
+//     console.log("the user ", user);
+//     // if( user.id !== 2 ) {
+//     //     throw "some string error";
+//     //     //throw new Error("a fancy error");
+//     //     console("ceva dupa return");
+//     // }
+//     return getUserFirstPost(user.id);
+// }).then( post => {
+//     console.log("   the user first post ", post);
+//     console.log("   the post id ", post.id);
+
+//     return getPostComments(post.id);
+// }).then( comments => {
+//     console.log("      the post first comment ", comments[0]);
+//     return Promise.all( [ 
+//         getUserAlbums(userId),
+//         getUserToDos(userId)
+//     ] );
+// }).then( responseArray => {
+//     const albums = responseArray[0];
+//     console.log("         the user's first album ", albums[0]);
+//     const todos = responseArray[1];
+//     console.log("         the user's first todo ", todos[0]);
+// } )
+// .catch((errorMsg) => {
+//     console.log("An error has occured: ", errorMsg);
+
+//     //console.log("An error has occured: ", errorMsg.message);
+// });

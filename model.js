@@ -8,12 +8,12 @@ function getUser(userId, callbackSuccess, callbackError) {
     }, 2000);
 }
 
-function getUserLastPost(userId, callbackSuccess, callbackError){
+function getUserFirstPost(userId, callbackSuccess, callbackError){
     setTimeout(function(){
         if(userId) {
             callbackSuccess({ "userId": 1, "id": 1, "title": "sunt aut facere repellat", "body": "quia et recusandae consequuntur expedita" });
         } else {
-            callbackError("getUserLastPost could not be processed, please provide a valid user id.");
+            callbackError("getUserFirstPost could not be processed, please provide a valid user id.");
         }
     }, 2000);
 }
@@ -44,15 +44,15 @@ var userId = 1;
 
 getUser(userId, (user) => {
     console.log("the user ", user);
-    getUserLastPost(user.id, (lastPost) => {
-      console.log("   the user lastPost ", lastPost);
-      getPostComments(lastPost.id, (comments) => {
+    getUserFirstPost(user.id, (firstPost) => {
+      console.log("   the user firstPost ", firstPost);
+      getPostComments(firstPost.id, (comments) => {
         console.log("      the post comments ", comments);
-        getUserAlbums(userId, (lastAlbum) => {
-            console.log("         the user's albums ", lastAlbum);
+        getUserAlbums(userId, (albums) => {
+            console.log("         the user's albums ", albums[0]);
         })
-        getUserToDos(userId, (lastTodo) => {
-            console.log("         the user's todo ", lastTodo);
+        getUserToDos(userId, (todos) => {
+            console.log("         the user's todo ", todos[0]);
         })
       })  
     })
